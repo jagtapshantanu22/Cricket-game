@@ -1,0 +1,382 @@
+from tkinter import *
+import random
+computer_move =target = run = 0
+bug1 = True
+winner = "xyz"
+inc = 1
+size = '1100x600'
+colourr = "#4ffafc"
+
+
+user_name = input("What is your name? ")
+user_name = user_name.title()
+computer = "computer"
+p_status,c_status = "bat","ball"
+batsman,bowler = user_name,computer
+bat_first = False
+def input_validator(lr,ur):
+	
+	while True:
+		user_input = input()
+
+		if not (user_input.isdecimal()):
+			print("Only INTEGER value are allowed.\nPlease enter again with 'int' data type. ")
+			continue
+		else:
+			user_input = int(user_input)
+
+		if (user_input < lr or user_input > ur):
+			print("Range error.\nPlease enter the input again within the valid range.")
+			continue
+	
+		return user_input
+		
+#toss section
+print("\nLet's begin with the toss.\nTo choose 'TAILS' enter 0'\nTO choose 'HEADS' enter 1")
+toss = input_validator(0,1)
+toss_result = random.randint(0,1)
+if toss == toss_result:
+	print("\nYou've won the toss.\n\nWhat do you want 'bat' first or 'ball' first?")
+	print("\nEnter 0 to 'bat' first or 1 to 'bowl' first")
+	choice = input_validator(0,1)
+	if choice == 0:
+		batsman = user_name
+		bowler = computer
+		
+
+
+		bat_first = True
+	else:
+		batsman = computer
+		bowler = user_name
+
+		p_status = "ball"
+		c_status = "bat"
+		
+else:
+	print("\nYou've lost the toss.")
+	if random.randint(0,1) == 0:
+			print("\nGet ready to bowl first.")
+			batsman = computer
+			bowler = user_name
+
+			p_status = "ball"
+			c_status = "bat"
+			
+	else:
+			print("\nGet ready to bat first.")
+			batsman = user_name
+			bowler = computer
+			bat_first = True
+			
+
+
+main_win = Tk()
+main_win.geometry(size)
+main_win['bg'] = colourr
+
+flag = True
+
+def counter(n):
+	r = 6
+
+
+	computer_move = random.randint(1,6)
+	global p_status
+	
+	global inc
+	if (p_status == "bat"):
+		inc = n
+		a,o =  0,7
+		
+	if (p_status == "ball"):
+		inc = computer_move
+		a,o = 7,0
+	
+	
+	global flag
+	if flag:
+
+		global run
+		run += inc
+		
+		global user_name
+		player_status = Label(main_win,text = user_name,bg = colourr)
+		player_status.grid(row =2 ,column = 0)
+		player_status.config(font = ("Sans Serif",25))
+
+		player_status_1 = Label(main_win,text = "Bat", bg = colourr)
+		player_status_1.grid(row = 3 ,column = a )
+		player_status_1.config(font = ("Sans Serif",25))
+
+
+		c_status = Label(main_win,text = 'Computer', bg = colourr)
+		c_status.grid(row = 2 ,column = 7 )
+		c_status.config(font = ("Sans Serif",25))
+
+		c_status_1 = Label(main_win,text = "Bowl",bg = colourr)
+		c_status_1.grid(row = 3 ,column = o )
+		c_status_1.config(font = ("Sans Serif",25))
+
+		
+		runs = Label(main_win, text = "Runs" ,bg = colourr)
+		runs.grid(row = r ,column = a )
+		runs.config(font = ("Sans Serif",25))
+
+		runs_1 = Label(main_win, text = run ,bg = colourr)
+		runs_1.grid(row = r+1 ,column = a )
+		runs_1.config(font = ("Sans Serif",25))
+		
+
+
+		p_pm = Label(main_win, text = "Previous move",bg = colourr)
+		p_pm.grid(row = 4 ,column = 0 )
+		p_pm.config(font = ("Sans Serif",25))
+
+		p_pm_1 = Label(main_win, text = n ,bg = colourr)
+		p_pm_1.grid(row = 5 ,column =0  )
+		p_pm_1.config(font = ("Sans Serif",25))
+
+
+		
+		c_pm = Label(main_win,text = "Computer move", bg = colourr)
+		c_pm.grid(row = 4,column = 7)
+		c_pm.config(font = ("Sans Serif",25))
+
+		c_pm_1 = Label(main_win,text = computer_move , bg = colourr)
+		c_pm_1.grid(row = 5,column = 7)
+		c_pm_1.config(font = ("Sans Serif",25))
+
+		if (n == computer_move):
+			runs_1 = Label(main_win, text = run ,fg = colourr, bg = colourr)
+			runs_1.grid(row = r+1 ,column = a)
+			runs_1.config(font = ("Sans Serif",25))
+
+			run -= inc
+			runs = Label(main_win, text =  "Runs",bg = colourr)
+			runs.grid(row = r ,column = a)
+			runs.config(font = ("Sans Serif",25))
+
+			runs_1 = Label(main_win, text = run ,bg = colourr)
+			runs_1.grid(row = r+1 ,column = a)
+			runs_1.config(font = ("Sans Serif",25))
+
+			colour = "ffd139"
+
+		
+
+			global target 
+			target = run+1
+			flag = False
+	else:
+		main_win.destroy()
+		mid_win = Tk()
+		mid_win.geometry(size)
+		mid_win['bg'] = '#57aff7'
+
+		dummy = str(target)
+		r_mm = bowler+" needs "+dummy+" run to win the match"
+		
+
+		mid_mess = Label(mid_win,text = r_mm  , bg = "#57aff7")
+		mid_mess.pack()
+		mid_mess.config(font = ("Sans Serif",25))
+		m_b = Button(mid_win,text = "NEXT",bg = "green",command = mid_win.destroy)
+		m_b.config(height = 3,width = 30)
+		m_b.pack()
+
+		mid_win.mainloop()
+
+
+			
+	
+
+lab1 = Label(main_win,text = "Enter your move",bg = colourr)
+lab1.config(font = ("Sans Serif",25))
+lab1.grid(row = 0,column = 0)
+b1 = Button(main_win,text = "1", command = lambda: counter(1))
+b1.grid(row = 1,column = 1,padx = 25,pady = 11,ipadx = 11,ipady = 11)
+b2 = Button(main_win,text = "2", command = lambda: counter(2))
+b2.grid(row = 1,column = 2,padx = 25,pady = 11,ipadx = 11,ipady = 11)
+b3 = Button(main_win,text = "3", command = lambda: counter(3))
+b3.grid(row = 1,column = 3,padx = 25,pady = 11,ipadx = 11,ipady = 11)
+b4 = Button(main_win,text= "4", command = lambda: counter(4))
+b4.grid(row = 1,column = 4,padx = 25,pady = 11,ipadx = 11,ipady = 11)
+b5 = Button(main_win,text = "5", command = lambda: counter(5))
+b5.grid(row = 1,column = 5,padx = 25,pady = 11,ipadx = 11,ipady = 11)
+b6 = Button(main_win,text = "6", command = lambda: counter(6))
+b6.grid(row = 1,column = 6,padx = 25,pady = 11,ipadx = 11,ipady = 11)
+
+
+main_win.mainloop()
+
+if (p_status == "ball"):
+	p_status = "bat"
+	c_status = "ball"
+else:
+	p_status = "ball"
+	c_status = "bat"
+
+
+colourr = "#ffd139"
+run = 0
+
+second_win = Tk()
+second_win.geometry(size)
+second_win['bg'] = colourr
+
+flag = True
+
+def counter_2(n):
+	global p_status
+	global target
+	r,a,o = 6,0,7
+	
+	computer_move = random.randint(1,6)
+	
+	
+	global inc
+	if (p_status == "bat"):
+		inc = n
+		a,o =  0,7
+		
+	if (p_status == "ball"):
+		inc = computer_move
+		a,o = 7,0
+	
+	global flag
+	if flag:
+		global run
+		run += inc
+		
+		global user_name
+		player_status = Label(second_win,text = user_name,bg = colourr)
+		player_status.grid(row =2 ,column = 0)
+		player_status.config(font = ("Sans Serif",25))
+
+		player_status_1 = Label(second_win,text = "Bat", bg = colourr)
+		player_status_1.grid(row = 3 ,column = 0 )
+		player_status_1.config(font = ("Sans Serif",25))
+
+
+		c_status = Label(second_win,text = 'Computer', bg = colourr)
+		c_status.grid(row = 2 ,column = 7 )
+		c_status.config(font = ("Sans Serif",25))
+
+		c_status_1 = Label(second_win,text = "Bowl",bg = colourr)
+		c_status_1.grid(row = 3 ,column = 7 )
+		c_status_1.config(font = ("Sans Serif",25))
+
+		
+		runs = Label(second_win, text = "Runs" ,bg = colourr)
+		runs.grid(row = r ,column = a )
+		runs.config(font = ("Sans Serif",25))
+
+		runs_1 = Label(second_win, text = run ,bg = colourr)
+		runs_1.grid(row = r+1 ,column = a )
+		runs_1.config(font = ("Sans Serif",25))
+
+
+		targ = Label(second_win,text = "Target",bg = colourr)
+		targ.grid(row = r,column = o)
+		targ.config(font = ("Sans Serif",25))
+
+		targ_1 = Label(second_win,text = target,bg = colourr)
+		targ_1.grid(row = r+1,column = o)
+		targ_1.config(font = ("Sans Serif",25))
+
+
+		p_pm = Label(second_win, text = "Previous move",bg = colourr)
+		p_pm.grid(row = 4 ,column = 0 )
+		p_pm.config(font = ("Sans Serif",25))
+
+		p_pm_1 = Label(second_win, text = n ,bg = colourr)
+		p_pm_1.grid(row = 5 ,column =0  )
+		p_pm_1.config(font = ("Sans Serif",25))
+
+
+		
+		c_pm = Label(second_win,text = "Computer move", bg = colourr)
+		c_pm.grid(row = 4,column = 7)
+		c_pm.config(font = ("Sans Serif",25))
+
+		c_pm_1 = Label(second_win,text = computer_move , bg = colourr)
+		c_pm_1.grid(row = 5,column = 7)
+		c_pm_1.config(font = ("Sans Serif",25))
+
+		if ((n == computer_move)):
+			runs_1 = Label(second_win, text = run ,fg = colourr, bg = colourr)
+			runs_1.grid(row = r+1 ,column = a)
+			runs_1.config(font = ("Sans Serif",25))
+			run -= inc
+			runs = Label(second_win, text =  "Runs",bg = colourr)
+			runs.grid(row = r ,column = a)
+			runs.config(font = ("Sans Serif",25))
+
+			runs_1 = Label(second_win, text = run ,bg = colourr)
+			runs_1.grid(row = r+1 ,column = a)
+			runs_1.config(font = ("Sans Serif",25))
+			flag = False
+		else:
+			if (run > target):
+				flag =  False
+			
+				
+	else:
+		second_win.destroy()
+		if (run < target):
+				
+				result = Tk()
+				result.geometry(size)
+				result['bg'] = '#57aff7'
+				global batsman
+
+				txt = Label(result,text = batsman.title()+" wins the match", bg = "#57aff7")
+				txt.config(font = ("Sans Serif",25))
+				txt.pack()
+
+				result.mainloop()
+		if (run == target):
+				
+				result = Tk()
+				result.geometry(size)
+				result['bg'] = '#57aff7'
+
+				txt = Label(result,text = "MATCH TIED", bg = "#57aff7")
+				txt.config(font = ("Sans Serif",25))
+				txt.pack()
+
+				result.mainloop()
+		
+		if (run > target):
+				
+				result = Tk()
+				result.geometry(size)
+				result['bg'] = '#57aff7'
+
+				txt = Label(result,text = bowler.title()+" wins the match", bg = "#57aff7")
+				txt.config(font = ("Sans Serif",25))
+				txt.pack()
+
+				result.mainloop()
+		
+	
+	
+
+lab1 = Label(second_win,text = "Enter your move",bg = colourr)
+lab1.config(font = ("Sans Serif",25))
+lab1.grid(row = 0,column = 0)
+b1 = Button(second_win,text = "1", command = lambda: counter_2(1))
+b1.grid(row = 1,column = 1,padx = 25,pady = 11,ipadx = 11,ipady = 11)
+b2 = Button(second_win,text = "2", command = lambda: counter_2(2))
+b2.grid(row = 1,column = 2,padx = 25,pady = 11,ipadx = 11,ipady = 11)
+b3 = Button(second_win,text = "3", command = lambda: counter_2(3))
+b3.grid(row = 1,column = 3,padx = 25,pady = 11,ipadx = 11,ipady = 11)
+b4 = Button(second_win,text= "4", command = lambda: counter_2(4))
+b4.grid(row = 1,column = 4,padx = 25,pady = 11,ipadx = 11,ipady = 11)
+b5 = Button(second_win,text = "5", command = lambda: counter_2(5))
+b5.grid(row = 1,column = 5,padx = 25,pady = 11,ipadx = 11,ipady = 11)
+b6 = Button(second_win,text = "6", command = lambda: counter_2(6))
+b6.grid(row = 1,column = 6,padx = 25,pady = 11,ipadx = 11,ipady = 11)
+
+second_win.mainloop()
